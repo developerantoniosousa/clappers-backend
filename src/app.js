@@ -3,8 +3,10 @@ require('dotenv/config');
 const express = require('express');
 const mongoose = require('mongoose');
 const {ValidationError} = require('express-validation');
+const Youch = require('youch');
 
 const routes = require('./routes');
+const EnviromentUtils = require('./utils/Enviroment');
 const mongodbConfig = require('./config/mongodb');
 
 class App {
@@ -33,9 +35,14 @@ class App {
     }
 
     exeception() {
-        this.server.use((error, request, response, next) => {
+        this.server.use(async (error, request, response, next) => {
             if (error instanceof ValidationError) {
                 return response.status(error.statusCode).json(error);
+            }
+
+            if (EnviromentUtils.isDevelopment()) {
+                const youch = new Youch(error, request);
+                return response.status(error.statusCode || 500).json(await youch.toJSON());
             }
 
             return response.status(500).json({ error: 'Server Internal Error' });
