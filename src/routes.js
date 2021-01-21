@@ -34,4 +34,10 @@ router.get(
   asyncHandler(controllers.CollaboratorController.list)
 );
 
+router.post(
+  '/recognitions',
+  validate(validators.Recognition),
+  asyncHandler(controllers.RecognitionController.store)
+);
+
 module.exports = router;
