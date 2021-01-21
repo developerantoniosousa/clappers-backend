@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-validation": "^3.0.6",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.13",
     "require-dir": "^1.2.0",
     "youch": "^2.1.1"
