@@ -2,8 +2,7 @@ const Collaborator = require("../models/CollaboratorModel");
 
 class CollaboratorController {
   async store(request, response) {
-    const { name, avatar } = request.body;
-    const collabortor = await Collaborator.create({ name, avatar });
+    const collabortor = await Collaborator.create(request.body);
     return response.json(collabortor);
   }
   async list(request, response) {
