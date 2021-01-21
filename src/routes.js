@@ -40,4 +40,6 @@ router.post(
   asyncHandler(controllers.RecognitionController.store)
 );
 
+router.get('/dashboard', asyncHandler(controllers.DashboardController.index));
+
 module.exports = router;
