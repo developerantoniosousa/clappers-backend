@@ -1,6 +1,8 @@
 require('dotenv/config');
+
 const express = require('express');
 const mongoose = require('mongoose');
+const {ValidationError} = require('express-validation');
 
 const routes = require('./routes');
 const mongodbConfig = require('./config/mongodb');
@@ -12,6 +14,7 @@ class App {
         this.middlewares();
         this.database();
         this.routes();
+        this.exeception();
     }
 
     middlewares() {
@@ -27,6 +30,14 @@ class App {
 
     routes() {
         this.server.use('/api', routes);
+    }
+
+    exeception() {
+        this.server.use((error, request, response, next) => {
+            if (error instanceof ValidationError) {
+                return response.status(error.statusCode).json(error);
+            }
+        })
     }
 }
 
