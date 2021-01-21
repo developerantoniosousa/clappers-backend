@@ -43,4 +43,10 @@ router.post(
 router.get('/dashboard', asyncHandler(controllers.DashboardController.index));
 router.get('/timeline', asyncHandler(controllers.TimelineController.index));
 
+router.put(
+  '/delivery-claps',
+  validate(validators.DeliveryClap),
+  asyncHandler(controllers.DeliveryClapController.update)
+);
+
 module.exports = router;
