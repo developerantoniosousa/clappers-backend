@@ -5,10 +5,11 @@ class CollaboratorController {
     const collabortor = await Collaborator.create(request.body);
     return response.json(collabortor);
   }
+
   async list(request, response) {
-    const { name } = request.query;
+    const { name, page = 1 } = request.query;
     const filter = name == null ? {} : { name: new RegExp(name, "i") };
-    const collaborators = await Collaborator.find(filter);
+    const collaborators = await Collaborator.paginate(filter, { page: Math.abs(page) });
     return response.json(collaborators);
   }
 }

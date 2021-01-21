@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const CollaboratorSchema = new mongoose.Schema({
   name: {
@@ -25,5 +26,7 @@ const CollaboratorSchema = new mongoose.Schema({
     default: 0,
   },
 });
+
+CollaboratorSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Collaborator", CollaboratorSchema);
