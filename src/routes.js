@@ -21,7 +21,7 @@ router.post(
   asyncHandler(controllers.SessionController.store)
 );
 router.post(
-  "/collaborator",
+  "/collaborators",
   validate(validators.Collaborator),
   asyncHandler(controllers.CollaboratorController.store)
 );
@@ -30,7 +30,7 @@ router.post(
 router.use(middlewares.auth);
 
 router.get(
-  "/collaborator",
+  "/collaborators",
   asyncHandler(controllers.CollaboratorController.list)
 );
 
