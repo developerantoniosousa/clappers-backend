@@ -1,5 +1,6 @@
 const Event = require('../models/EventModel');
 const Collaborator = require('../models/CollaboratorModel');
+const Achieviment = require('../models/AchiviementModel');
 
 const EventsType = require('../../contants/EventsType');
 
@@ -21,11 +22,19 @@ class RecognitionController {
             return response.status(400).json({ error: 'You do not have enough claps available' });
         }
 
+        // updating total claps for sender and receiver
         sender.available_claps -= claps;
         receiver.own_claps += claps;
         await sender.save();
         await receiver.save();
 
+        // saving the achieviment when someone is recognized
+        const achieviment = await Achieviment.findOne({ collaborator: receiver_id, name: category_type });
+        if (!achieviment) {
+            await Achieviment.create({ collaborator: receiver_id, name: category_type, level: 1 });
+        }
+
+        // registering events
         await Event.create({
             content: {
                 claps,
