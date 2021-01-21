@@ -41,5 +41,6 @@ router.post(
 );
 
 router.get('/dashboard', asyncHandler(controllers.DashboardController.index));
+router.get('/timeline', asyncHandler(controllers.TimelineController.index));
 
 module.exports = router;
