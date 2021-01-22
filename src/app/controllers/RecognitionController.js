@@ -10,6 +10,10 @@ class RecognitionController {
         const claps = Math.abs(request.body.claps);
         const userSenderId = request.userIdLogged;
 
+        if (userSenderId === userReceiverId) {
+            return response.status(403).json({ error: 'You cannot recognize yourself' });
+        }
+
         const sender = await Collaborator.findOne({ user: userSenderId });
         const receiver = await Collaborator.findOne({ user: userReceiverId });
 
