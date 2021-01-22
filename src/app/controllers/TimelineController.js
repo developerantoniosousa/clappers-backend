@@ -7,7 +7,7 @@ class TimelineController {
 
         const collaborator = await Collaborator.findOne({ user: userIdLogged });
 
-        const events = await Event.find({ collaborator: collaborator._id }).sort({createdAt: 1});
+        const events = await Event.find({ collaborator: collaborator._id }).sort({createdAt: -1});
         return response.json(events);
     }
 }
