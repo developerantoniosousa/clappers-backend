@@ -6,12 +6,12 @@ const EventsType = require('../../contants/EventsType');
 
 class RecognitionController {
     async store(request, response) {
-        const { receiver_id, category_type } = request.body;
+        const { receiver_id: userReceiverId, category_type } = request.body;
         const claps = Math.abs(request.body.claps);
-        const senderId = request.userIdLogged;
+        const userSenderId = request.userIdLogged;
 
-        const sender = await Collaborator.findOne({ user: senderId });
-        const receiver = await Collaborator.findOne({ user: receiver_id });
+        const sender = await Collaborator.findOne({ user: userSenderId });
+        const receiver = await Collaborator.findOne({ user: userReceiverId });
 
         if (!receiver) {
             return response.status(404).json({ error: 'Receiver not found' });
@@ -29,10 +29,10 @@ class RecognitionController {
         await receiver.save();
 
         // saving the achieviment when someone is recognized
-        const achieviment = await Achieviment.findOne({ collaborator: receiver_id, name: category_type });
+        const achieviment = await Achieviment.findOne({ collaborator: receiver._id, name: category_type });
         if (!achieviment) {
             const level = 1;
-            const newAchieviment = await Achieviment.create({ collaborator: receiver_id, name: category_type, level });
+            const newAchieviment = await Achieviment.create({ collaborator: receiver._id, name: category_type, level });
 
             // registering achieviment event
             await Event.create({
@@ -41,7 +41,7 @@ class RecognitionController {
                     level
                 },
                 type: EventsType.ACHIEVEMENT_BADGE,
-                collaborator: receiver_id
+                collaborator: receiver._id
             });
         }
 
@@ -50,13 +50,13 @@ class RecognitionController {
             content: {
                 claps,
                 target_user: {
-                    _id: receiver_id,
+                    _id: receiver._id,
                     name: receiver.name
                 },
                 category_type
             },
             type: EventsType.CLAP_SENT,
-            collaborator: senderId
+            collaborator: sender._id
         });
 
         await Event.create({
@@ -65,7 +65,7 @@ class RecognitionController {
                 category_type,
             },
             type: EventsType.CLAP_RECEIVED,
-            collaborator: receiver_id
+            collaborator: receiver._id
         });
 
         return response.json({ message: 'Recognition made with successfully' });
