@@ -2,9 +2,21 @@ const express = require("express");
 const { validate } = require("express-validation");
 const asyncHandler = require("express-async-handler");
 
-const controllers = require("./app/controllers");
-const validators = require("./app/validators");
-const middlewares = require("./app/middlewares");
+const authMiddleware = require("./app/middlewares/auth");
+
+const UserController = require('./app/controllers/UserController');
+const DashboardController = require('./app/controllers/DashboardController');
+const DeliveryClapController = require('./app/controllers/DeliveryClapController');
+const RecognitionController = require('./app/controllers/RecognitionController');
+const SessionController = require('./app/controllers/SessionController');
+const TimelineController = require('./app/controllers/TimelineController');
+const CollaboratorController = require('./app/controllers/CollaboratorController');
+
+const UserValidator = require('./app/validators/User');
+const SessionValidator = require('./app/validators/Session');
+const CollaboratorValidator = require('./app/validators/Collaborator');
+const DeliveryClapValidator = require('./app/validators/DeliveryClap');
+const RecognitionValidator = require('./app/validators/Recognition');
 
 const { Router } = express;
 
@@ -12,41 +24,41 @@ const router = new Router();
 
 router.post(
   "/users",
-  validate(validators.User),
-  asyncHandler(controllers.UserController.store)
+  validate(UserValidator),
+  asyncHandler(UserController.store)
 );
 router.post(
   "/sessions",
-  validate(validators.Session),
-  asyncHandler(controllers.SessionController.store)
+  validate(SessionValidator),
+  asyncHandler(SessionController.store)
 );
 router.post(
   "/collaborators",
-  validate(validators.Collaborator),
-  asyncHandler(controllers.CollaboratorController.store)
+  validate(CollaboratorValidator),
+  asyncHandler(CollaboratorController.store)
 );
 
 // all routes below must have to receive the access token
-router.use(middlewares.auth);
+router.use(authMiddleware);
 
 router.get(
   "/collaborators",
-  asyncHandler(controllers.CollaboratorController.list)
+  asyncHandler(CollaboratorController.list)
 );
 
 router.post(
   '/recognitions',
-  validate(validators.Recognition),
-  asyncHandler(controllers.RecognitionController.store)
+  validate(RecognitionValidator),
+  asyncHandler(RecognitionController.store)
 );
 
-router.get('/dashboard', asyncHandler(controllers.DashboardController.index));
-router.get('/timeline', asyncHandler(controllers.TimelineController.index));
+router.get('/dashboard', asyncHandler(DashboardController.index));
+router.get('/timeline', asyncHandler(TimelineController.index));
 
 router.put(
   '/delivery-claps',
-  validate(validators.DeliveryClap),
-  asyncHandler(controllers.DeliveryClapController.update)
+  validate(DeliveryClapValidator),
+  asyncHandler(DeliveryClapController.update)
 );
 
 module.exports = router;
