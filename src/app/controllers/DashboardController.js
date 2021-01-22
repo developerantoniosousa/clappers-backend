@@ -6,7 +6,7 @@ class DashboardController {
     async index(request, response) {
         const userIdLogged = request.userIdLogged;
 
-        const { own_claps, available_claps } = await Collaborator.findOne({ user: userIdLogged });
+        const { _id: collaboratorId, own_claps, available_claps } = await Collaborator.findOne({ user: userIdLogged });
 
         const badges = Object.values(CategoriesType).map(category => ({
             _id: String(Date.now()),
@@ -14,7 +14,7 @@ class DashboardController {
             level: 0,
         }));
 
-        const achieviments = await Achieviment.find({ collaborator: userIdLogged });
+        const achieviments = await Achieviment.find({ collaborator: collaboratorId });
 
         achieviments.forEach(achievement => {
             badges.forEach((badge, badgeIndex) => {
