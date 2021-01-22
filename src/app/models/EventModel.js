@@ -14,7 +14,7 @@ const EventSchema = new mongoose.Schema({
         ref: 'Collaborator'
     }
 }, {
-    timestamp: true,
+    timestamps: true,
 });
 
 module.exports = mongoose.model('Event', EventSchema);

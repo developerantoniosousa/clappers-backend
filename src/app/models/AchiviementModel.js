@@ -14,7 +14,7 @@ const AchiviementModel = new mongoose.Schema({
         ref: 'Collaborator'
     }
 }, {
-    timestamp: true,
+    timestamps: true,
 });
 
 module.exports = mongoose.model('Achiviement', AchiviementModel);
