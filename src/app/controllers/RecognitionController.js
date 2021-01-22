@@ -31,7 +31,18 @@ class RecognitionController {
         // saving the achieviment when someone is recognized
         const achieviment = await Achieviment.findOne({ collaborator: receiver_id, name: category_type });
         if (!achieviment) {
-            await Achieviment.create({ collaborator: receiver_id, name: category_type, level: 1 });
+            const level = 1;
+            const newAchieviment = await Achieviment.create({ collaborator: receiver_id, name: category_type, level });
+
+            // registering achieviment event
+            await Event.create({
+                content: {
+                    category_type,
+                    level
+                },
+                type: EventsType.ACHIEVEMENT_BADGE,
+                collaborator: receiver_id
+            });
         }
 
         // registering events
