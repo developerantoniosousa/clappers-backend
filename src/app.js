@@ -23,9 +23,7 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
-    if (EnviromentUtils.isDevelopment()) {
-      this.server.use(cors());
-    }
+    this.server.use(cors());
   }
 
   database() {
