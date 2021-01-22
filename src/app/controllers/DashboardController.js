@@ -19,7 +19,11 @@ class DashboardController {
         achieviments.forEach(achievement => {
             badges.forEach((badge, badgeIndex) => {
                 if (achievement.name === badge.category_type) {
-                    badges[badgeIndex] = achievement;
+                    badges[badgeIndex] = {
+                        _id: achievement._id,
+                        category_type: achievement.name,
+                        level: achievement.level,
+                    };
                 }
             });
         });
