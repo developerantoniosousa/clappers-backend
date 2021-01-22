@@ -7,12 +7,12 @@ class CollaboratorController {
   }
 
   async list(request, response) {
-    const senderId = request.userIdLogged;
+    const userIdLogged = request.userIdLogged;
     const { name, page = 1 } = request.query;
     const filter =
       name == null
-        ? { user: { $ne: senderId } }
-        : { name: new RegExp(name, "i"), user: { $ne: senderId } };
+        ? { user: { $ne: userIdLogged } }
+        : { name: new RegExp(name, "i"), user: { $ne: userIdLogged } };
     const collaborators = await Collaborator.paginate(filter, {
       page: Math.abs(page),
     });
