@@ -1,4 +1,6 @@
 require("dotenv/config");
+var cors = require('cors')
+
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -21,6 +23,9 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    if (EnviromentUtils.isDevelopment()) {
+      this.server.use(cors());
+    }
   }
 
   database() {
