@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "server": "nodemon"
+    "server": "nodemon",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
