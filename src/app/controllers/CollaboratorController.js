@@ -15,6 +15,7 @@ class CollaboratorController {
         : { name: new RegExp(name, "i"), user: { $ne: userIdLogged } };
     const collaborators = await Collaborator.paginate(filter, {
       page: Math.abs(page),
+      sort: 'name'
     });
     return response.json(collaborators);
   }
